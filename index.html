@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lythe | Skye</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--b:#000;--w:#fff;--accent:#1a3d7a;--dim:#555;--muted:#888;--rule:#141414}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--b);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+    /* ── UTILITY ── */
+    .wrap{max-width:1100px;margin:0 auto;padding:0 clamp(1.5rem,4vw,3rem)}
+    .mono{font-family:'JetBrains Mono',monospace}
+    .dim{color:var(--dim)}
+    .accent{color:var(--accent)}
+    hr.sep{border:none;border-top:1px solid var(--rule);margin:0}
+
+    /* ── REVEAL ── */
+    .rv{opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+    .rv.in{opacity:1;transform:none}
+    .rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}.rv-d3{transition-delay:.3s}.rv-d4{transition-delay:.4s}.rv-d5{transition-delay:.5s}
+
+    /* ── HERO ── */
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;position:relative}
+
+    /* Logo image animation */
+    .logo-img{width:min(200px,45vw);height:auto;margin-bottom:3rem;filter:brightness(0) invert(1);opacity:0;transform:scale(.85);animation:logoIn 1.2s cubic-bezier(.16,1,.3,1) .2s forwards}
+    @keyframes logoIn{to{opacity:1;transform:scale(1)}}
+
+    .hero-name{font-size:clamp(3rem,10vw,7rem);font-weight:900;letter-spacing:-.06em;line-height:.9;opacity:0;animation:fadeIn .8s ease 1.4s forwards}
+    .hero-sub{margin-top:1.5rem;font-size:clamp(.9rem,1.6vw,1.1rem);color:var(--muted);font-weight:300;max-width:460px;line-height:1.7;opacity:0;animation:fadeIn .8s ease 1.8s forwards}
+    .hero-tag{margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);opacity:0;animation:fadeIn .8s ease 2.2s forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+
+    .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;opacity:0;animation:fadeIn .6s ease 2.6s forwards}
+    .hero-scroll span{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+    .hero-scroll-line{width:1px;height:40px;background:linear-gradient(180deg,var(--accent),transparent);animation:pulse 2s ease-in-out infinite 2.8s}
+    @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+    /* ── SECTIONS ── */
+    .sec{padding:clamp(5rem,10vw,10rem) 0}
+    .label{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+    .label::after{content:'';flex:1;height:1px;background:var(--rule)}
+    .h{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.08;max-width:700px}
+    .body{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--muted);line-height:1.8;font-weight:300;max-width:560px;margin-top:1.2rem}
+
+    /* ── ABOUT ── */
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+    .about-stat{display:flex;flex-direction:column;gap:.3rem;padding:2rem 0;border-bottom:1px solid var(--rule)}
+    .about-stat:first-child{border-top:1px solid var(--rule)}
+    .about-stat-val{font-size:2.2rem;font-weight:800;letter-spacing:-.03em}
+    .about-stat-desc{font-size:.95rem;color:var(--dim);font-weight:300}
+
+    /* ── DEMO ── */
+    .demo-center{position:relative;margin-top:4rem;display:flex;justify-content:center;min-height:520px}
+    .phone{width:270px;background:#080808;border-radius:26px;border:1px solid #1a1a1a;padding:7px;position:relative;z-index:2;flex-shrink:0}
+    .phone-notch{width:70px;height:16px;background:#080808;border-radius:0 0 10px 10px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:5}
+    .phone-screen{background:var(--b);border-radius:20px;padding:2rem .65rem .8rem;display:flex;flex-direction:column;gap:.45rem;min-height:400px}
+
+    /* Branches */
+    .branches{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:1100px;height:100%}
+    .branch{position:absolute;display:flex;align-items:center;gap:0;opacity:0;transition:opacity .6s ease}
+    .rv.in .branch{opacity:1}
+    /* Left branches: card on left, line connects to phone on right */
+    .branch-l{right:calc(50% + 148px);flex-direction:row}
+    /* Right branches: line from phone on left, card on right */
+    .branch-r{left:calc(50% + 148px);flex-direction:row}
+    .branch-1{top:10%;transition-delay:.4s}
+    .branch-2{top:36%;transition-delay:.7s}
+    .branch-3{top:62%;transition-delay:1s}
+    .branch-4{top:85%;transition-delay:1.3s}
+
+    .branch-line{width:55px;height:1px;position:relative;flex-shrink:0;overflow:visible}
+    .branch-line::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--accent);opacity:.25}
+    .branch-line::after{content:'';position:absolute;top:-1.5px;height:4px;width:18px;background:var(--accent);border-radius:2px;box-shadow:0 0 10px var(--accent),0 0 20px rgba(26,61,122,.4)}
+    /* Left: pulse travels from right (phone) to left (card) */
+    .branch-l .branch-line::after{animation:pulseL 1.8s ease-in-out infinite}
+    /* Right: pulse travels from left (phone) to right (card) */
+    .branch-r .branch-line::after{animation:pulseR 1.8s ease-in-out infinite}
+    @keyframes pulseR{0%{left:0;opacity:.9}80%{left:calc(100% - 18px);opacity:.3}100%{left:calc(100% - 18px);opacity:0}}
+    @keyframes pulseL{0%{right:0;opacity:.9}80%{right:calc(100% - 18px);opacity:.3}100%{right:calc(100% - 18px);opacity:0}}
+    .branch-1 .branch-line::after{animation-delay:0s}
+    .branch-2 .branch-line::after{animation-delay:.4s}
+    .branch-3 .branch-line::after{animation-delay:.8s}
+    .branch-4 .branch-line::after{animation-delay:1.2s}
+
+    .branch-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;box-shadow:0 0 8px var(--accent);animation:dotPulse 2.5s ease-in-out infinite}
+    @keyframes dotPulse{0%,100%{box-shadow:0 0 4px var(--accent);opacity:.5}50%{box-shadow:0 0 14px var(--accent),0 0 24px rgba(26,61,122,.3);opacity:1}}
+
+    .branch-card{max-width:240px}
+    .branch-l .branch-card{text-align:right}
+    .branch-card h4{font-size:1rem;font-weight:700;margin-bottom:.2rem;color:var(--w)}
+    .branch-card p{font-size:.88rem;color:var(--dim);line-height:1.6;font-weight:300}
+    .branch-card .bnum{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;color:var(--accent);margin-bottom:.3rem}
+    .ph{display:flex;align-items:center;gap:.4rem;padding:0 .3rem .4rem;border-bottom:1px solid #0e0e0e;margin-bottom:.2rem}
+    .ph-av{width:22px;height:22px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.45rem;font-weight:700}
+    .ph-name{font-size:.65rem;font-weight:600}
+    .ph-status{font-size:.45rem;color:var(--dim)}
+    .bub{max-width:82%;padding:.45rem .6rem;border-radius:9px;font-size:.65rem;line-height:1.4;opacity:0;transform:translateY(5px);animation:bubIn .3s ease forwards}
+    .bub-o{align-self:flex-end;background:#005c4b;border-bottom-right-radius:2px;color:#bbb}
+    .bub-i{align-self:flex-start;background:#0e0e0e;border-bottom-left-radius:2px;color:var(--muted)}
+    .bub-t{font-size:.42rem;color:rgba(255,255,255,.2);text-align:right;margin-top:.1rem}
+    .bub:nth-child(2){animation-delay:.5s}.bub:nth-child(3){animation-delay:1.1s}.bub:nth-child(4){animation-delay:1.7s}.bub:nth-child(5){animation-delay:2.3s}.bub:nth-child(6){animation-delay:2.8s}.bub:nth-child(7){animation-delay:3.3s}
+    @keyframes bubIn{to{opacity:1;transform:none}}
+
+    /* ── PROBLEM ── */
+    .problem-statement{font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.15;max-width:750px;text-align:center;margin:0 auto}
+    .problem-statement .hl{color:var(--accent)}
+    .problem-row{display:grid;grid-template-columns:repeat(3,1fr);margin-top:4rem;border-top:1px solid var(--rule)}
+    .problem-col{padding:2rem 2rem 2rem 0;border-right:1px solid var(--rule)}
+    .problem-col:last-child{border-right:none;padding-right:0}
+    .problem-col:first-child{padding-left:0}
+    .problem-pct{font-size:3.5rem;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--accent);margin-bottom:.75rem}
+    .problem-col h4{font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+    .problem-col .tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-bottom:.6rem}
+    .problem-col p{font-size:1rem;color:var(--dim);line-height:1.7;font-weight:300}
+
+    /* ── FLOW ── */
+    .flow-row{display:flex;align-items:center;margin-top:3rem;gap:0}
+    .flow-item{flex:1;text-align:center;padding:2rem 1rem;border:1px solid var(--rule);border-radius:0;position:relative}
+    .flow-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--accent);letter-spacing:2px;margin-bottom:.7rem}
+    .flow-item h4{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
+    .flow-item p{font-size:.92rem;color:var(--dim);line-height:1.6}
+    .flow-arrow{flex-shrink:0;width:40px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.2rem;opacity:.6}
+    .flow-arrow svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5}
+
+    /* ── WHY NOW - VISUAL ── */
+    .why-visual{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+    .why-cards{display:flex;flex-direction:column;gap:0}
+    .why-card{padding:1.8rem 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:52px 1fr;gap:1.2rem;align-items:start}
+    .why-card:first-child{border-top:1px solid var(--rule)}
+    .why-icon{width:52px;height:52px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center}
+    .why-icon svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .why-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem}
+    .why-card h4{font-size:1.15rem;font-weight:700;margin-bottom:.3rem}
+    .why-card h4 .hl{color:var(--accent)}
+    .why-card p{font-size:1rem;color:var(--dim);line-height:1.7;font-weight:300}
+
+    /* Bar chart */
+    .bar-chart{display:flex;flex-direction:column;gap:1.2rem;padding:2rem;border:1px solid var(--rule)}
+    .bar-chart-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem}
+    .bar{display:flex;align-items:center;gap:1rem}
+    .bar-label{font-size:.72rem;color:var(--muted);min-width:90px;text-align:right;font-weight:500}
+    .bar-track{flex:1;height:28px;background:var(--rule);position:relative;overflow:hidden}
+    .bar-fill{height:100%;background:var(--accent);position:relative;width:0;transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+    .rv.in .bar-fill{width:var(--w)}
+    .bar-val{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--w);font-weight:500}
+    .bar-fill.low{background:#1a1a1a}.bar-fill.low .bar-val{color:var(--dim)}
+
+    /* ── WHY US - VISUAL ── */
+    .whyus-visual{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+    /* Growth loop */
+    .loop-wrap{padding:2rem;border:1px solid var(--rule);display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+    .loop-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);align-self:flex-start}
+    .loop-svg{width:260px;height:260px}
+    .loop-svg text{font-family:'Inter',sans-serif;fill:var(--w);font-size:11px;font-weight:600}
+    .loop-svg .loop-label{fill:var(--dim);font-size:9px;font-weight:400}
+    .loop-svg circle{fill:none;stroke:var(--rule);stroke-width:1}
+    .loop-svg .loop-ring{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 6}
+    .loop-svg .loop-arrow{fill:var(--accent)}
+    .loop-svg .loop-node{fill:#0a0a0a;stroke:var(--accent);stroke-width:1}
+    .loop-metrics{display:flex;gap:2rem;width:100%}
+    .loop-metric{text-align:center;flex:1}
+    .loop-metric-val{font-size:1.8rem;font-weight:900;color:var(--accent);letter-spacing:-.03em}
+    .loop-metric-desc{font-size:.65rem;color:var(--dim);margin-top:.15rem}
+
+    /* ── MARKET - VISUAL ── */
+    .market-visual{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:center}
+    .market-numbers{display:flex;flex-direction:column;gap:0}
+    .market-item{padding:2rem 0;border-bottom:1px solid var(--rule)}
+    .market-item:first-child{border-top:1px solid var(--rule)}
+    .market-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem}
+    .market-num{font-size:clamp(2.4rem,4.5vw,3.4rem);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:.3rem;color:var(--accent)}
+    .market-desc{font-size:.95rem;color:var(--dim);line-height:1.5}
+    /* Concentric circles */
+    .tam-circles{display:flex;align-items:center;justify-content:center;padding:2rem}
+    .tam-svg{width:300px;height:300px}
+    .tam-svg circle{fill:none;stroke-width:1}
+    .tam-svg .c-tam{stroke:var(--accent);opacity:.2;r:140}
+    .tam-svg .c-sam{stroke:var(--accent);opacity:.4;r:95}
+    .tam-svg .c-som{stroke:var(--accent);fill:rgba(26,61,122,.15);r:45}
+    .tam-svg text{font-family:'Inter',sans-serif;fill:var(--w);font-weight:700}
+    .tam-svg .t-big{font-size:14px}
+    .tam-svg .t-sm{font-size:9px;fill:var(--dim);font-weight:400}
+    .tam-svg .t-label{font-family:'JetBrains Mono',monospace;font-size:8px;fill:var(--dim);letter-spacing:2px}
+
+    /* ── MODEL ── */
+    .model-stats{display:flex;gap:4rem;margin-top:2rem;padding:2rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+    .model-stat-val{font-size:2.6rem;font-weight:900;letter-spacing:-.03em;color:var(--accent)}
+    .model-stat-desc{font-size:.92rem;color:var(--dim);margin-top:.2rem}
+    .price-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:3rem;border:1px solid var(--rule)}
+    .price-col{padding:1.4rem;border-right:1px solid var(--rule)}
+    .price-col:last-child{border-right:none}
+    .price-col-head{font-size:.95rem;font-weight:700;padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid var(--rule)}
+    .price-col-head .pop{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.2rem}
+    .price-val{font-size:1.9rem;font-weight:800;letter-spacing:-.02em}
+    .price-per{font-size:.78rem;color:var(--dim);margin-bottom:.8rem}
+    .price-feat{font-size:.85rem;color:var(--dim);padding:.15rem 0;line-height:1.6}
+    .price-col.active{background:#060606}
+
+    /* ── PROJECTIONS ── */
+    .proj-row{display:flex;align-items:baseline;gap:1.5rem;margin-top:2.5rem;flex-wrap:wrap;justify-content:center;text-align:center}
+    .proj-val{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-.04em;color:var(--accent)}
+    .proj-x{font-size:1.4rem;color:#222;font-weight:300}
+    .proj-desc{font-size:.92rem;color:var(--dim);margin-top:.2rem}
+    .proj-note{text-align:center;margin-top:2rem;font-size:.9rem;color:var(--dim);max-width:530px;margin-left:auto;margin-right:auto;line-height:1.7;padding-top:1.5rem;border-top:1px solid var(--rule)}
+
+    /* ── COMPETITION ── */
+    .comp-tbl{width:100%;border-collapse:collapse;margin-top:3rem;font-size:.95rem}
+    .comp-tbl th,.comp-tbl td{padding:1rem 1.2rem;text-align:left;border-bottom:1px solid var(--rule)}
+    .comp-tbl th{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:500}
+    .comp-tbl .us{background:#050505}
+    .comp-tbl th.us{color:var(--accent);font-weight:700}
+    .ck{color:#4ade80;font-weight:700;font-size:1rem}
+    .xx{color:#c0392b;font-size:1rem}
+
+    /* ── GTM ── */
+    /* ── GTM TIMELINE ── */
+    .timeline{position:relative;margin-top:3rem;padding-left:140px}
+    .tl-line{position:absolute;left:132px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--rule) 90%,transparent)}
+    .tl-item{position:relative;padding:0 0 3.5rem 2.5rem}
+    .tl-item:last-child{padding-bottom:0}
+    /* Dot on line */
+    .tl-dot{position:absolute;left:-10px;top:4px;width:18px;height:18px;border-radius:50%;border:2px solid var(--accent);background:var(--b);z-index:2}
+    .tl-dot::after{content:'';position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    /* Date label */
+    .tl-when{position:absolute;left:-140px;top:2px;width:110px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.85rem;letter-spacing:1px;color:var(--muted);font-weight:500}
+    .tl-stage{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+    .tl-item h4{font-size:1.2rem;font-weight:700;margin-bottom:.3rem}
+    .tl-item p{font-size:1rem;color:var(--dim);line-height:1.7;font-weight:300;max-width:500px}
+
+    /* ── TEAM ── */
+    .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:3rem;border-top:1px solid var(--rule)}
+    .team-member{padding:2.5rem 2rem;border-bottom:1px solid var(--rule)}
+    .team-member:nth-child(odd){border-right:1px solid var(--rule)}
+    .tm-init{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;color:var(--accent);margin-bottom:.7rem}
+    .tm-name{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.1rem}
+    .tm-role{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-bottom:.7rem}
+    .team-member p{font-size:.95rem;color:var(--dim);line-height:1.7;font-weight:300}
+
+    /* ── ADVISORS ── */
+    .adv-row{display:grid;grid-template-columns:repeat(4,1fr);margin-top:3rem;border-top:1px solid var(--rule)}
+    .adv{padding:2rem 1.5rem 2rem 0;border-right:1px solid var(--rule)}
+    .adv:last-child{border-right:none}
+    .adv h4{font-size:1.05rem;font-weight:700;margin-bottom:.15rem}
+    .adv-title{font-size:.82rem;color:var(--accent);font-weight:500;margin-bottom:.15rem}
+    .adv-loc{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;color:var(--dim);margin-bottom:.5rem;text-transform:uppercase}
+    .adv p{font-size:.88rem;color:var(--dim);line-height:1.6}
+    .creds{display:flex;gap:.6rem;margin-top:2rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--rule)}
+    .cred{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;padding:.4rem .7rem;border:1px solid var(--rule)}
+
+    /* ── CTA ── */
+    .cta{text-align:center;padding:clamp(6rem,12vw,12rem) 0 clamp(4rem,8vw,6rem)}
+    .cta .h{margin:0 auto;max-width:600px}
+    .cta .body{margin:.8rem auto 0;text-align:center;max-width:400px}
+    .cta-btns{display:flex;gap:.6rem;justify-content:center;margin-top:2.5rem}
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.75rem 1.5rem;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s;border:none;text-decoration:none;border-radius:0}
+    .btn-w{background:var(--w);color:var(--b)}
+    .btn-w:hover{background:#ddd}
+    .btn-g{background:transparent;color:var(--dim);border:1px solid var(--rule)}
+    .btn-g:hover{color:var(--w);border-color:#333}
+    .cta-contact{margin-top:2.5rem;font-size:.95rem;color:var(--dim);line-height:1.8}
+    .cta-contact a{color:var(--accent);text-decoration:none}
+    .cta-contact a:hover{color:var(--w)}
+    .cta-contact strong{color:var(--w)}
+
+    footer{padding:2rem;text-align:center;border-top:1px solid var(--rule)}
+    footer p{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1.5px;color:#282828;text-transform:uppercase}
+    footer a{color:#333;text-decoration:none}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .about-grid{grid-template-columns:1fr}
+      .branches{display:none}
+      .demo-center{min-height:auto}
+      .phone{margin:0 auto}
+      .problem-row{grid-template-columns:1fr}
+      .problem-col{border-right:none;padding:1.5rem 0;border-bottom:1px solid var(--rule)}
+      .problem-col:last-child{border-bottom:none}
+      .problem-col:first-child{padding-left:0}
+      .flow-row{flex-direction:column}
+      .flow-item{text-align:left;padding:1.2rem 0;border:none;border-bottom:1px solid var(--rule)}
+      .flow-item:last-child{border-bottom:none}
+      .flow-arrow{transform:rotate(90deg);width:auto;height:30px}
+      .flow-arrow svg{width:20px;height:20px}
+      .why-visual,.whyus-visual,.market-visual{grid-template-columns:1fr}
+      .bar-chart,.loop-wrap,.tam-circles{order:-1}
+      .market-numbers{order:1}
+      .market-item{border-bottom:1px solid var(--rule)}
+      .market-item:last-child{border-bottom:none}
+      .price-grid{grid-template-columns:1fr 1fr}
+      .model-stats{flex-wrap:wrap;gap:2rem}
+      .team-grid{grid-template-columns:1fr}
+      .team-member{border-right:none!important}
+      .adv-row{grid-template-columns:1fr 1fr}
+      .adv{border-right:none;border-bottom:1px solid var(--rule);padding:1.5rem 0}
+      .timeline{padding-left:30px}
+      .tl-when{position:relative;left:auto;top:auto;width:auto;text-align:left;margin-bottom:.3rem}
+      .tl-line{left:22px}
+      .tl-dot{left:-20px}
+      .proj-row{flex-direction:column;gap:.8rem}
+      .proj-x{transform:rotate(90deg)}
+      .comp-tbl{font-size:.85rem}
+      .comp-tbl th,.comp-tbl td{padding:.7rem .6rem}
+      .loop-svg{width:220px;height:220px}
+      .tam-svg{width:260px;height:260px}
+    }
+    @media(max-width:500px){
+      .price-grid,.adv-row{grid-template-columns:1fr}
+      .model-stats{flex-direction:column;gap:2rem}
+      .hero-name{font-size:clamp(2.5rem,14vw,4rem)}
+      .problem-statement{font-size:clamp(1.5rem,6vw,2rem)}
+      .comp-tbl{font-size:.75rem}
+      .comp-tbl th,.comp-tbl td{padding:.6rem .4rem}
+      .phone{width:240px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="logo-img" src="logo.png" alt="Lythe">
+
+  <h1 class="hero-name">lythe</h1>
+  <p class="hero-sub">The first agentic AI concierge that matches students to paid gigs through WhatsApp. No app. Just text.</p>
+  <p class="hero-tag mono">student agentic network</p>
+
+  <div class="hero-scroll">
+    <span>scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ABOUT -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">01 &mdash; What We Do</div>
+    <h2 class="h">Gig matching, <span class="accent">reimagined.</span></h2>
+    <div class="about-grid">
+      <div>
+        <p class="body" style="max-width:100%">Lythe built Skye &mdash; a conversational AI that runs on WhatsApp. Students text Skye, get matched to paid gigs in 5 minutes, and get paid. No downloads, no profiles, no platform fatigue.</p>
+      </div>
+      <div>
+        <div class="about-stat rv rv-d1"><div class="about-stat-val accent">5 min</div><div class="about-stat-desc">Average time from request to gig confirmation</div></div>
+        <div class="about-stat rv rv-d2"><div class="about-stat-val">0 apps</div><div class="about-stat-desc">Everything happens inside WhatsApp</div></div>
+        <div class="about-stat rv rv-d3"><div class="about-stat-val accent">100%</div><div class="about-stat-desc">Conversational &mdash; onboard to payment via chat</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- DEMO -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">02 &mdash; See It In Action</div>
+    <h2 class="h" style="text-align:center;margin:0 auto">Students ask. <span class="accent">Skye books the gig.</span></h2>
+    <div class="demo-center">
+      <div class="branches">
+        <!-- Left: card ← dot ← line ← [PHONE] -->
+        <div class="branch branch-l branch-1">
+          <div class="branch-card"><div class="bnum">01</div><h4>ML-Driven Matching</h4><p>Skills, proximity, and interest scoring in real-time</p></div>
+          <div class="branch-dot"></div>
+          <div class="branch-line"></div>
+        </div>
+        <!-- Right: [PHONE] → line → dot → card -->
+        <div class="branch branch-r branch-2">
+          <div class="branch-line"></div>
+          <div class="branch-dot"></div>
+          <div class="branch-card"><div class="bnum">02</div><h4>Conversational Onboarding</h4><p>Smart follow-ups extract skills naturally from chat</p></div>
+        </div>
+        <!-- Left: card ← dot ← line ← [PHONE] -->
+        <div class="branch branch-l branch-3">
+          <div class="branch-card"><div class="bnum">03</div><h4>Skill Extraction</h4><p>AI tags and indexes from every conversation</p></div>
+          <div class="branch-dot"></div>
+          <div class="branch-line"></div>
+        </div>
+        <!-- Right: [PHONE] → line → dot → card -->
+        <div class="branch branch-r branch-4">
+          <div class="branch-line"></div>
+          <div class="branch-dot"></div>
+          <div class="branch-card"><div class="bnum">04</div><h4>Dual Confirmation</h4><p>Both parties confirm before the gig locks in</p></div>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" id="chat">
+          <div class="ph"><div class="ph-av">S</div><div><div class="ph-name">Skye</div><div class="ph-status">online</div></div></div>
+          <div class="bub bub-o">yo skye, i'm at north spine w 1hr free, any gigs nearby?<div class="bub-t">11:24</div></div>
+          <div class="bub bub-i">Hey Canaan! Where are you now and how long are you free?<div class="bub-t">11:24</div></div>
+          <div class="bub bub-o">north spine, got 1 hour before my classes start again :(<div class="bub-t">11:25</div></div>
+          <div class="bub bub-i">Bet. What are u feeling today?<br>A) event stuff<br>B) content / creative<br>C) idc just pay me<div class="bub-t">11:25</div></div>
+          <div class="bub bub-o">C<div class="bub-t">11:25</div></div>
+          <div class="bub bub-i">Gotchu. booth helper @ career fair<br>3-4pm (1 hr) &middot; $25 &middot; 5 min walk<br>Take it? (yes / no)<div class="bub-t">11:26</div></div>
+          <div class="bub bub-o">say less, accept.<div class="bub-t">11:26</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- PROBLEM -->
+<section class="sec rv" style="text-align:center">
+  <div class="wrap">
+    <div class="label" style="justify-content:center">03 &mdash; The Problem</div>
+    <h2 class="problem-statement">Platform-based gig apps are too <span class="hl">high-friction</span> for students.</h2>
+    <p class="body" style="margin:1rem auto 0;text-align:center;max-width:480px">No platform does <span class="accent">real-time matching</span> for gigs. Until now.</p>
+    <div class="problem-row">
+      <div class="problem-col rv rv-d1">
+        <div class="problem-pct">20%</div>
+        <h4>Informal Hustle</h4>
+        <div class="tag">Telegram, WhatsApp groups</div>
+        <p>Unsafe and unreliable. Frequent ghosting and unpaid work.</p>
+      </div>
+      <div class="problem-col rv rv-d2">
+        <div class="problem-pct">50%</div>
+        <h4>Gig-focused Apps</h4>
+        <div class="tag">Quest, Fiverr, Upwork</div>
+        <p>High onboarding friction. Low notification reliability. Gigs get missed.</p>
+      </div>
+      <div class="problem-col rv rv-d3">
+        <div class="problem-pct">30%</div>
+        <h4>Traditional Jobs</h4>
+        <div class="tag">Part-time, Internships</div>
+        <p>Heavy search &amp; application flow for each gig individually.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- HOW IT WORKS -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">04 &mdash; How It Works</div>
+    <h2 class="h">Conversational AI that runs the <span class="accent">entire flow.</span></h2>
+    <p class="body">From onboarding to payment, Skye handles everything through built-in voice/text architecture.</p>
+    <div class="flow-row">
+      <div class="flow-item rv rv-d1"><div class="flow-num">01</div><h4>Onboard</h4><p>AI extracts skills from chat</p></div>
+      <div class="flow-arrow rv rv-d1"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-item rv rv-d2"><div class="flow-num">02</div><h4>Post Gig</h4><p>Listers post via chat</p></div>
+      <div class="flow-arrow rv rv-d2"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-item rv rv-d3"><div class="flow-num">03</div><h4>ML Match</h4><p>Best-fit in 5 minutes</p></div>
+      <div class="flow-arrow rv rv-d3"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-item rv rv-d4"><div class="flow-num">04</div><h4>Confirm</h4><p>Dual confirmation</p></div>
+      <div class="flow-arrow rv rv-d4"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-item rv rv-d5"><div class="flow-num">05</div><h4>Get Paid</h4><p>Payment via LythePay</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- WHY NOW -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">05 &mdash; Why Now</div>
+    <h2 class="h">Conversational agents make gig platforms <span class="accent">obsolete.</span></h2>
+    <div class="why-visual">
+      <div class="why-cards">
+        <div class="why-card rv rv-d1">
+          <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <div><div class="why-tag">Market Shift</div><h4><span class="hl">Old Platforms</span> Don't Fit</h4><p>Fiverr and Upwork follow traditional rating algorithms that penalize newcomers. Students start at zero.</p></div>
+        </div>
+        <div class="why-card rv rv-d2">
+          <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M20.2 20.2A10 10 0 0 0 22 12h-10"/></svg></div>
+          <div><div class="why-tag">Technology</div><h4><span class="hl">Conversational AI</span> Is Ready</h4><p>Agentic APIs can now replicate entire gig-matching networks without building an interactive platform.</p></div>
+        </div>
+        <div class="why-card rv rv-d3">
+          <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><div class="why-tag">Demand</div><h4>The <span class="hl">Layoff</span> Generation</h4><p>Massive layoffs are driving students toward gig work, while SMBs shift to flexible, task-based help.</p></div>
+        </div>
+      </div>
+      <div class="bar-chart rv rv-d2">
+        <div class="bar-chart-title">Student gig platform friction</div>
+        <div class="bar"><div class="bar-label">Fiverr</div><div class="bar-track"><div class="bar-fill low" style="--w:85%"><span class="bar-val">High friction</span></div></div></div>
+        <div class="bar"><div class="bar-label">Upwork</div><div class="bar-track"><div class="bar-fill low" style="--w:78%"><span class="bar-val">High friction</span></div></div></div>
+        <div class="bar"><div class="bar-label">Telegram</div><div class="bar-track"><div class="bar-fill low" style="--w:60%"><span class="bar-val">Unreliable</span></div></div></div>
+        <div class="bar"><div class="bar-label">Quest</div><div class="bar-track"><div class="bar-fill low" style="--w:70%"><span class="bar-val">App required</span></div></div></div>
+        <div class="bar"><div class="bar-label">Skye</div><div class="bar-track"><div class="bar-fill" style="--w:95%"><span class="bar-val">5 min &middot; WhatsApp</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- WHY US -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">06 &mdash; Why Us</div>
+    <h2 class="h">Not another gig app. A student <span class="accent">movement.</span></h2>
+    <div class="whyus-visual">
+      <div class="why-cards">
+        <div class="why-card rv rv-d1">
+          <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div><div class="why-tag">Founder Fit</div><h4>We <span class="hl">Lived</span> It</h4><p>We're students solving our own problem. Ghosted gigs, unpaid work, discrimination on platforms built for professionals.</p></div>
+        </div>
+        <div class="why-card rv rv-d2">
+          <div class="why-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div><div class="why-tag">Distribution</div><h4>Community-<span class="hl">Growth</span> Loop</h4><p>Every event, every campus activation adds both users and gigs simultaneously.</p></div>
+        </div>
+        <div class="why-card rv rv-d3">
+          <div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+          <div><div class="why-tag">Vision</div><h4>Belief Over <span class="hl">Product</span></h4><p>Lythe redefines how our generation earns: replacing traditional jobs with flexible, task-based work.</p></div>
+        </div>
+      </div>
+      <div class="loop-wrap rv rv-d2">
+        <div class="loop-title">Community growth flywheel</div>
+        <svg class="loop-svg" viewBox="0 0 260 260">
+          <!-- Outer ring -->
+          <circle class="loop-ring" cx="130" cy="130" r="110"/>
+          <!-- Arrow heads on ring -->
+          <polygon class="loop-arrow" points="240,125 240,135 248,130"/>
+          <polygon class="loop-arrow" points="20,125 20,135 12,130"/>
+          <polygon class="loop-arrow" points="125,20 135,20 130,12"/>
+          <polygon class="loop-arrow" points="125,240 135,240 130,248"/>
+          <!-- Nodes -->
+          <rect class="loop-node" x="85" y="8" width="90" height="30" rx="4"/>
+          <text x="130" y="28" text-anchor="middle">Campus Event</text>
+          <rect class="loop-node" x="195" y="108" width="60" height="44" rx="4"/>
+          <text x="225" y="128" text-anchor="middle">+Users</text>
+          <text x="225" y="141" text-anchor="middle" class="loop-label">students join</text>
+          <rect class="loop-node" x="85" y="222" width="90" height="30" rx="4"/>
+          <text x="130" y="242" text-anchor="middle">More Gigs</text>
+          <rect class="loop-node" x="5" y="108" width="60" height="44" rx="4"/>
+          <text x="35" y="128" text-anchor="middle">+Listers</text>
+          <text x="35" y="141" text-anchor="middle" class="loop-label">SMBs post</text>
+        </svg>
+        <div class="loop-metrics">
+          <div class="loop-metric"><div class="loop-metric-val">2x</div><div class="loop-metric-desc">Dual-sided growth per event</div></div>
+          <div class="loop-metric"><div class="loop-metric-val">$0</div><div class="loop-metric-desc">CAC via organic campus loops</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- MARKET -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">07 &mdash; Market Opportunity</div>
+    <h2 class="h">Starting in Singapore. Scaling <span class="accent">globally.</span></h2>
+    <p class="body">264 million global students represent a massive untapped workforce.</p>
+    <div class="market-visual">
+      <div class="market-numbers">
+        <div class="market-item rv rv-d1"><div class="market-label">TAM &middot; Global</div><div class="market-num">$2.64B</div><p class="market-desc">264M global students in task-based GMV</p></div>
+        <div class="market-item rv rv-d2"><div class="market-label">SAM &middot; ASEAN</div><div class="market-num">$224M</div><p class="market-desc">8.5% student base across ASEAN countries</p></div>
+        <div class="market-item rv rv-d3"><div class="market-label">SOM &middot; Singapore</div><div class="market-num">$0.31M</div><p class="market-desc">10% adoption rate, conservative estimate</p></div>
+      </div>
+      <div class="tam-circles rv rv-d2">
+        <svg class="tam-svg" viewBox="0 0 300 300">
+          <!-- TAM outer -->
+          <circle class="c-tam" cx="150" cy="150"/>
+          <text x="150" y="32" text-anchor="middle" class="t-label">TAM</text>
+          <text x="150" y="46" text-anchor="middle" class="t-big">$2.64B</text>
+          <text x="150" y="60" text-anchor="middle" class="t-sm">264M students globally</text>
+          <!-- SAM middle -->
+          <circle class="c-sam" cx="150" cy="150"/>
+          <text x="150" y="80" text-anchor="middle" class="t-label">SAM</text>
+          <text x="150" y="95" text-anchor="middle" class="t-big">$224M</text>
+          <!-- SOM inner -->
+          <circle class="c-som" cx="150" cy="150"/>
+          <text x="150" y="142" text-anchor="middle" class="t-label">SOM</text>
+          <text x="150" y="158" text-anchor="middle" class="t-big" style="font-size:16px">$0.31M</text>
+          <text x="150" y="172" text-anchor="middle" class="t-sm">Singapore</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- BUSINESS MODEL -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">08 &mdash; Business Model</div>
+    <h2 class="h">2% commission + <span class="accent">subscription upsell.</span></h2>
+    <div class="model-stats">
+      <div><div class="model-stat-val">2%</div><div class="model-stat-desc">Commission per gig</div></div>
+      <div><div class="model-stat-val">$29.99</div><div class="model-stat-desc">Pro subscription / month</div></div>
+      <div><div class="model-stat-val">$15</div><div class="model-stat-desc">Pay-per-hire tier</div></div>
+    </div>
+    <div class="price-grid">
+      <div class="price-col"><div class="price-col-head">Free</div><div class="price-val">$0</div><div class="price-per">/month</div><div class="price-feat">Standard matching</div><div class="price-feat">Max 2 workers</div><div class="price-feat">Unlimited posts</div><div class="price-feat">Basic support</div></div>
+      <div class="price-col active"><div class="price-col-head"><span class="pop">Popular</span>Pro</div><div class="price-val accent">$29.99</div><div class="price-per">/month</div><div class="price-feat">Priority matching</div><div class="price-feat">Max 5 workers</div><div class="price-feat">Unlimited posts</div><div class="price-feat">Direct support</div><div class="price-feat">Scheduling + alerts</div></div>
+      <div class="price-col"><div class="price-col-head">Custom</div><div class="price-val">Custom</div><div class="price-per">/month</div><div class="price-feat">Unlimited matching</div><div class="price-feat">Unlimited workers</div><div class="price-feat">Slack support</div><div class="price-feat">Invoicing + billing</div><div class="price-feat">Replacement SLA</div></div>
+      <div class="price-col"><div class="price-col-head">Usage</div><div class="price-val accent">$15</div><div class="price-per">/hire</div><div class="price-feat">Priority matching</div><div class="price-feat">Guaranteed hire</div><div class="price-feat">One-time hire</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- PROJECTIONS -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label" style="justify-content:center">09 &mdash; Financial Projections</div>
+    <h2 class="h" style="text-align:center;margin:0 auto">$93k in projected MRR at <span class="accent">&lt;1% adoption.</span></h2>
+    <div class="proj-row">
+      <div><div class="proj-val">~3.1k</div><div class="proj-desc">Pro-paying teams</div></div>
+      <div class="proj-x">&times;</div>
+      <div><div class="proj-val">$29.99</div><div class="proj-desc">per team / month</div></div>
+      <div class="proj-x">=</div>
+      <div><div class="proj-val">~$93k</div><div class="proj-desc">MRR (projected)</div></div>
+    </div>
+    <div class="proj-note">Assuming ~3.1k repeat hiring teams (events, vendors, agencies) in Singapore adopt Pro (&lt;1% of SG enterprises), with only 1 month of subscription per team.</div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- COMPETITION -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">10 &mdash; Competitor Analysis</div>
+    <h2 class="h">Where we <span class="accent">stand.</span></h2>
+    <div style="overflow-x:auto">
+      <table class="comp-tbl">
+        <thead><tr><th>Feature</th><th class="us">Lythe (Skye)</th><th>Telegram</th><th>Fiverr / Upwork</th><th>Staffie / Quest</th></tr></thead>
+        <tbody>
+          <tr><td>Real-time matching</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td></tr>
+          <tr><td>WhatsApp-native UX</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td></tr>
+          <tr><td>Student-focused</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td></tr>
+          <tr><td>No app download</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td></tr>
+          <tr><td>AI skill extraction</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td></tr>
+          <tr><td>Payment protection</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="ck">&#10003;</span></td><td><span class="ck">&#10003;</span></td></tr>
+          <tr><td>Conversational onboarding</td><td class="us"><span class="ck">&#10003;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td><td><span class="xx">&#10005;</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- GTM -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">11 &mdash; Go-to-Market</div>
+    <h2 class="h">Start with student network, then deploy the <span class="accent">gigs.</span></h2>
+    <div class="timeline">
+      <div class="tl-line"></div>
+      <div class="tl-item rv rv-d1">
+        <div class="tl-when">Jul '25</div>
+        <div class="tl-dot"></div>
+        <div class="tl-stage">Stage 01</div>
+        <h4>MVP</h4>
+        <p>Surveys, testing sprints, build MVP, establish student feedback loop, community-building within student communities.</p>
+      </div>
+      <div class="tl-item rv rv-d2">
+        <div class="tl-when">Dec '25</div>
+        <div class="tl-dot"></div>
+        <div class="tl-stage">Stage 02 <span style="color:#e84393;font-weight:700;margin-left:.5rem">ONGOING</span></div>
+        <h4>Student Network</h4>
+        <p>Deploy student-student matchmaking, build localised network, virality campaigns, product launch (Skye v1).</p>
+      </div>
+      <div class="tl-item rv rv-d3">
+        <div class="tl-when">Apr '26</div>
+        <div class="tl-dot"></div>
+        <div class="tl-stage">Stage 03</div>
+        <h4>Gig Network</h4>
+        <p>Launch gig-matching, enterprise packages for SMEs, acquire Telegram communities, expand to include freelancers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- TEAM -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">12 &mdash; Founding Team</div>
+    <h2 class="h">The students who chose hustle over <span class="accent">homework.</span></h2>
+    <div class="team-grid">
+      <div class="team-member rv rv-d1">
+        <div class="tm-init">CP</div>
+        <div class="tm-name">Canaan Poh</div>
+        <div class="tm-role">CEO, Founder &middot; Singapore</div>
+        <p>2x founder &middot; Growth at Roger (YC S24) &middot; ex-Accenture &middot; NTU BBA &middot; Built D2C brand to $3.5m sales across 15 retail partners before turning 20.</p>
+      </div>
+      <div class="team-member rv rv-d2">
+        <div class="tm-init">RS</div>
+        <div class="tm-name">Rajvee Saraf</div>
+        <div class="tm-role">CMO, Co-Founder &middot; Singapore</div>
+        <p>3x growth operator &middot; ex-ACE.sg &middot; NTU BBA &middot; Led startup partnerships across 3 countries before turning 19.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ADVISORS -->
+<section class="sec rv">
+  <div class="wrap">
+    <div class="label">13 &mdash; Advisors</div>
+    <h2 class="h">A bench of advisors who've done this <span class="accent">before.</span></h2>
+    <div class="adv-row">
+      <div class="adv rv rv-d1"><h4>Christopher Fong</h4><div class="adv-title">Co-Founder of Key (VC-backed)</div><div class="adv-loc">Mountain View, CA</div><p>ex-Google &middot; Haas Alumni &middot; Angel Investor &middot; Fundraising mentor</p></div>
+      <div class="adv rv rv-d2"><h4>Grace Lee</h4><div class="adv-title">GTM at Virio (VC-backed)</div><div class="adv-loc">San Francisco, CA</div><p>Founding GTM &middot; LinkedIn Creator &middot; 2x Founder &middot; Marketing mentor</p></div>
+      <div class="adv rv rv-d3"><h4>Elise Tan</h4><div class="adv-title">Founder, Asia Startup Network</div><div class="adv-loc">Singapore</div><p>Community-builder &middot; Marketplace Investor &middot; Financing mentor</p></div>
+      <div class="adv rv rv-d4"><h4>Hrishi Olickel</h4><div class="adv-title">CTO of Greywing (YC W21)</div><div class="adv-loc">Singapore</div><p>CTO of 2x YC Startups &middot; Forbes 30u30 &middot; AI/ML mentor</p></div>
+    </div>
+    <div class="creds">
+      <span class="cred">Google</span><span class="cred">Y Combinator</span><span class="cred">Forbes 30u30</span><span class="cred">Xoogler Ventures</span><span class="cred">ACE.sg</span>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- CTA -->
+<section class="cta rv">
+  <div class="wrap">
+    <div class="label" style="justify-content:center">14 &mdash; Let's Talk</div>
+    <h2 class="h">Built by students, for a <span class="accent">better future.</span></h2>
+    <p class="body">Let's chat more over Kopi. We're raising to scale Skye across Singapore and ASEAN.</p>
+    <div class="cta-btns">
+      <a href="mailto:canaan@lythe.ai" class="btn btn-w">Get in touch &rarr;</a>
+      <a href="https://www.linkedin.com/company/lythegigs" target="_blank" rel="noopener" class="btn btn-g">LinkedIn</a>
+    </div>
+    <div class="cta-contact">
+      <p><strong>Canaan Poh</strong>, Founder</p>
+      <p><a href="mailto:canaan@lythe.ai">canaan@lythe.ai</a> &middot; <a href="https://lythe.ai" target="_blank" rel="noopener">lythe.ai</a></p>
+    </div>
+  </div>
+</section>
+
+<footer><p>&copy; 2026 Lythe &middot; <a href="https://lythe.ai" target="_blank" rel="noopener">lythe.ai</a></p></footer>
+
+<script>
+// Scroll reveal
+const io=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('in')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// Replay chat bubbles
+const cio=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.querySelectorAll('.bub').forEach(b=>{b.style.animation='none';b.offsetHeight;b.style.animation=''})}})},{threshold:.2});
+const ch=document.getElementById('chat');if(ch)cio.observe(ch);
+
+// Count up numbers
+const countIO=new IntersectionObserver(e=>{e.forEach(el=>{if(!el.isIntersecting)return;const t=el.target;if(t.dataset.c)return;t.dataset.c='1';const txt=t.textContent;const m=txt.match(/^([~$]*)(\d[\d,.]*)(.*)/);if(!m)return;const pre=m[1],target=parseFloat(m[2].replace(/,/g,'')),suf=m[3],dec=m[2].includes('.');let s=performance.now();function tick(now){const p=Math.min((now-s)/1200,1);const ease=1-Math.pow(1-p,3);const v=target*ease;t.textContent=pre+(dec?v.toFixed(2):Math.round(v).toLocaleString())+suf;if(p<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)})},{threshold:.5});
+document.querySelectorAll('.about-stat-val,.problem-pct,.market-num,.model-stat-val,.proj-val,.price-val').forEach(el=>{if(/\d/.test(el.textContent))countIO.observe(el)});
+</script>
+</body>
+</html>
