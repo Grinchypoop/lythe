@@ -232,6 +232,8 @@
     .tl-dot::after{content:'';position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
     /* Date label */
     .tl-when{position:absolute;left:-140px;top:2px;width:110px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.85rem;letter-spacing:1px;color:var(--muted);font-weight:500}
+    .tl-pulse{display:inline-block;width:8px;height:8px;background:#e63946;border-radius:50%;margin-left:.4rem;vertical-align:middle;animation:tlPulse 1.5s ease-in-out infinite}
+    @keyframes tlPulse{0%,100%{box-shadow:0 0 0 0 rgba(230,57,70,.6);opacity:1}50%{box-shadow:0 0 0 8px rgba(230,57,70,0);opacity:.7}}
     .tl-stage{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
     .tl-item h4{font-size:1.2rem;font-weight:700;margin-bottom:.3rem}
     .tl-item p{font-size:1rem;color:var(--dim);line-height:1.7;font-weight:300;max-width:500px}
@@ -685,7 +687,7 @@
         <p>Surveys, testing sprints, build MVP, establish student feedback loop, community-building within student communities.</p>
       </div>
       <div class="tl-item rv rv-d2">
-        <div class="tl-when">Dec '25</div>
+        <div class="tl-when">Dec '25 <span class="tl-pulse"></span></div>
         <div class="tl-dot"></div>
         <div class="tl-stage">Stage 02 <span style="color:#f0a0b0;font-weight:700;margin-left:.5rem">ONGOING</span></div>
         <h4>Student Network</h4>
