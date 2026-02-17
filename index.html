@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    :root{--b:#000;--w:#fff;--accent:#f0a0b0;--dim:#555;--muted:#888;--rule:#141414}
+    :root{--b:#000;--w:#fff;--accent:#e63946;--dim:#555;--muted:#888;--rule:#141414}
     html{scroll-behavior:smooth}
     body{font-family:'Inter',sans-serif;background:var(--b);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
@@ -76,7 +76,7 @@
 
     .branch-line{width:55px;height:1px;position:relative;flex-shrink:0;overflow:visible}
     .branch-line::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--accent);opacity:.25}
-    .branch-line::after{content:'';position:absolute;top:-1.5px;height:4px;width:18px;background:var(--accent);border-radius:2px;box-shadow:0 0 10px var(--accent),0 0 20px rgba(240,160,176,.4)}
+    .branch-line::after{content:'';position:absolute;top:-1.5px;height:4px;width:18px;background:var(--accent);border-radius:2px;box-shadow:0 0 10px var(--accent),0 0 20px rgba(230,57,70,.4)}
     /* Left: pulse travels from right (phone) to left (card) */
     .branch-l .branch-line::after{animation:pulseL 1.8s ease-in-out infinite}
     /* Right: pulse travels from left (phone) to right (card) */
@@ -89,7 +89,7 @@
     .branch-4 .branch-line::after{animation-delay:1.2s}
 
     .branch-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;box-shadow:0 0 8px var(--accent);animation:dotPulse 2.5s ease-in-out infinite}
-    @keyframes dotPulse{0%,100%{box-shadow:0 0 4px var(--accent);opacity:.5}50%{box-shadow:0 0 14px var(--accent),0 0 24px rgba(240,160,176,.3);opacity:1}}
+    @keyframes dotPulse{0%,100%{box-shadow:0 0 4px var(--accent);opacity:.5}50%{box-shadow:0 0 14px var(--accent),0 0 24px rgba(230,57,70,.3);opacity:1}}
 
     .branch-card{max-width:240px}
     .branch-l .branch-card{text-align:right}
@@ -219,7 +219,7 @@
     .comp-tbl .us{background:#050505}
     .comp-tbl th.us{color:var(--accent);font-weight:700}
     .ck{color:#4ade80;font-weight:700;font-size:1rem}
-    .xx{color:#4a9eff;font-size:1rem}
+    .xx{color:#f0a0b0;font-size:1rem}
 
     /* ── GTM ── */
     /* ── GTM TIMELINE ── */
@@ -586,7 +586,7 @@
           <text x="210" y="100" text-anchor="middle" class="t-label">SAM</text>
           <text x="210" y="118" text-anchor="middle" class="t-big">$224M</text>
           <!-- SOM inner -->
-          <circle cx="210" cy="210" r="60" fill="rgba(74,158,255,.15)" stroke="#4a9eff" stroke-width="2.5"/>
+          <circle cx="210" cy="210" r="60" fill="rgba(240,160,176,.15)" stroke="#f0a0b0" stroke-width="2.5"/>
           <text x="210" y="200" text-anchor="middle" class="t-label">SOM</text>
           <text x="210" y="220" text-anchor="middle" class="t-big" style="font-size:18px">$0.31M</text>
           <text x="210" y="238" text-anchor="middle" class="t-sm">Singapore</text>
@@ -687,7 +687,7 @@
       <div class="tl-item rv rv-d2">
         <div class="tl-when">Dec '25</div>
         <div class="tl-dot"></div>
-        <div class="tl-stage">Stage 02 <span style="color:#4a9eff;font-weight:700;margin-left:.5rem">ONGOING</span></div>
+        <div class="tl-stage">Stage 02 <span style="color:#f0a0b0;font-weight:700;margin-left:.5rem">ONGOING</span></div>
         <h4>Student Network</h4>
         <p>Deploy student-student matchmaking, build localised network, virality campaigns, product launch (Skye v1).</p>
       </div>
