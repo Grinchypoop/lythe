@@ -120,12 +120,12 @@
 
     /* ── FLOW ── */
     .flow-row{display:flex;align-items:center;margin-top:3rem;gap:0}
-    .flow-item{flex:1;text-align:center;padding:2rem 1rem;border:1px solid var(--rule);border-radius:0;position:relative}
-    .flow-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--accent);letter-spacing:2px;margin-bottom:.7rem}
+    .flow-item{flex:1;text-align:center;padding:2rem 1.2rem;background:#0a0a0a;border:1px solid var(--rule);border-radius:0;position:relative}
     .flow-item h4{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
     .flow-item p{font-size:.92rem;color:var(--dim);line-height:1.6}
-    .flow-arrow{flex-shrink:0;width:40px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.2rem;opacity:.6}
-    .flow-arrow svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5}
+    .flow-arrow{flex-shrink:0;width:56px;display:flex;align-items:center;justify-content:center}
+    .flow-arrow svg{width:36px;height:36px;stroke:var(--accent);fill:none;stroke-width:1.5;animation:flowPulse 2s ease-in-out infinite}
+    @keyframes flowPulse{0%,100%{opacity:.3;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
     .flow-arrow-down{display:none}
 
     /* ── WHY NOW - VISUAL ── */
@@ -292,8 +292,8 @@
       .flow-item{text-align:center;padding:2rem 1.5rem;border:1px solid var(--rule);border-bottom:none}
       .flow-item:last-child{border-bottom:1px solid var(--rule)}
       .flow-arrow{display:none}
-      .flow-arrow-down{display:flex;justify-content:center;padding:.8rem 0}
-      .flow-arrow-down svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5;opacity:.6}
+      .flow-arrow-down{display:flex;justify-content:center;padding:1rem 0}
+      .flow-arrow-down svg{width:36px;height:36px;stroke:var(--accent);fill:none;stroke-width:1.5;animation:flowPulse 2s ease-in-out infinite}
       .why-visual,.whyus-visual,.market-visual{grid-template-columns:1fr}
       .bar-chart,.loop-wrap,.tam-circles{order:-1}
       .market-numbers{order:1}
@@ -457,19 +457,19 @@
     <h2 class="h">Conversational AI that runs the <span class="accent">entire flow.</span></h2>
     <p class="body">From onboarding to payment, Skye handles everything through built-in voice/text architecture.</p>
     <div class="flow-row">
-      <div class="flow-item rv rv-d1"><div class="flow-num">01</div><h4>Onboard</h4><p>AI extracts skills from chat</p></div>
+      <div class="flow-item rv rv-d1"><h4>Onboard</h4><p>AI extracts skills from chat</p></div>
       <div class="flow-arrow rv rv-d1"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-arrow-down rv rv-d1"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="flow-item rv rv-d2"><div class="flow-num">02</div><h4>Post Gig</h4><p>Listers post via chat</p></div>
+      <div class="flow-item rv rv-d2"><h4>Post Gig</h4><p>Listers post via chat</p></div>
       <div class="flow-arrow rv rv-d2"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-arrow-down rv rv-d2"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="flow-item rv rv-d3"><div class="flow-num">03</div><h4>ML Match</h4><p>Best-fit in 5 minutes</p></div>
+      <div class="flow-item rv rv-d3"><h4>ML Match</h4><p>Best-fit in 5 minutes</p></div>
       <div class="flow-arrow rv rv-d3"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-arrow-down rv rv-d3"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="flow-item rv rv-d4"><div class="flow-num">04</div><h4>Confirm</h4><p>Dual confirmation</p></div>
+      <div class="flow-item rv rv-d4"><h4>Confirm</h4><p>Dual confirmation</p></div>
       <div class="flow-arrow rv rv-d4"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-arrow-down rv rv-d4"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="flow-item rv rv-d5"><div class="flow-num">05</div><h4>Get Paid</h4><p>Payment via LythePay</p></div>
+      <div class="flow-item rv rv-d5"><h4>Get Paid</h4><p>Payment via LythePay</p></div>
     </div>
   </div>
 </section>
