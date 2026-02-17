@@ -179,10 +179,6 @@
     /* Concentric circles */
     .tam-circles{display:flex;align-items:center;justify-content:center;padding:2rem}
     .tam-svg{width:420px;height:420px}
-    .tam-svg circle{fill:none;stroke-width:1.5}
-    .tam-svg .c-tam{stroke:var(--w);opacity:.15;r:190}
-    .tam-svg .c-sam{stroke:var(--w);opacity:.35;r:130}
-    .tam-svg .c-som{stroke:#ffd700;fill:rgba(255,215,0,.12);r:60}
     .tam-svg text{font-family:'Inter',sans-serif;fill:var(--w);font-weight:700}
     .tam-svg .t-big{font-size:16px}
     .tam-svg .t-sm{font-size:10px;fill:var(--muted);font-weight:400}
@@ -578,16 +574,18 @@
       <div class="tam-circles rv rv-d2">
         <svg class="tam-svg" viewBox="0 0 420 420">
           <!-- TAM outer -->
-          <circle class="c-tam" cx="210" cy="210"/>
+          <circle cx="210" cy="210" r="190" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+          <circle cx="210" cy="210" r="190" fill="rgba(255,255,255,.03)" stroke="none"/>
           <text x="210" y="38" text-anchor="middle" class="t-label">TAM</text>
           <text x="210" y="56" text-anchor="middle" class="t-big">$2.64B</text>
           <text x="210" y="72" text-anchor="middle" class="t-sm">264M students globally</text>
           <!-- SAM middle -->
-          <circle class="c-sam" cx="210" cy="210"/>
+          <circle cx="210" cy="210" r="130" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+          <circle cx="210" cy="210" r="130" fill="rgba(255,255,255,.04)" stroke="none"/>
           <text x="210" y="100" text-anchor="middle" class="t-label">SAM</text>
           <text x="210" y="118" text-anchor="middle" class="t-big">$224M</text>
           <!-- SOM inner -->
-          <circle class="c-som" cx="210" cy="210"/>
+          <circle cx="210" cy="210" r="60" fill="rgba(255,215,0,.15)" stroke="#ffd700" stroke-width="2.5"/>
           <text x="210" y="200" text-anchor="middle" class="t-label">SOM</text>
           <text x="210" y="220" text-anchor="middle" class="t-big" style="font-size:18px">$0.31M</text>
           <text x="210" y="238" text-anchor="middle" class="t-sm">Singapore</text>
