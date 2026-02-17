@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    :root{--b:#000;--w:#fff;--accent:#1a3d7a;--dim:#555;--muted:#888;--rule:#141414}
+    :root{--b:#000;--w:#fff;--accent:#4a9eff;--dim:#555;--muted:#888;--rule:#141414}
     html{scroll-behavior:smooth}
     body{font-family:'Inter',sans-serif;background:var(--b);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
@@ -75,7 +75,7 @@
 
     .branch-line{width:55px;height:1px;position:relative;flex-shrink:0;overflow:visible}
     .branch-line::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--accent);opacity:.25}
-    .branch-line::after{content:'';position:absolute;top:-1.5px;height:4px;width:18px;background:var(--accent);border-radius:2px;box-shadow:0 0 10px var(--accent),0 0 20px rgba(26,61,122,.4)}
+    .branch-line::after{content:'';position:absolute;top:-1.5px;height:4px;width:18px;background:var(--accent);border-radius:2px;box-shadow:0 0 10px var(--accent),0 0 20px rgba(74,158,255,.4)}
     /* Left: pulse travels from right (phone) to left (card) */
     .branch-l .branch-line::after{animation:pulseL 1.8s ease-in-out infinite}
     /* Right: pulse travels from left (phone) to right (card) */
@@ -88,7 +88,7 @@
     .branch-4 .branch-line::after{animation-delay:1.2s}
 
     .branch-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;box-shadow:0 0 8px var(--accent);animation:dotPulse 2.5s ease-in-out infinite}
-    @keyframes dotPulse{0%,100%{box-shadow:0 0 4px var(--accent);opacity:.5}50%{box-shadow:0 0 14px var(--accent),0 0 24px rgba(26,61,122,.3);opacity:1}}
+    @keyframes dotPulse{0%,100%{box-shadow:0 0 4px var(--accent);opacity:.5}50%{box-shadow:0 0 14px var(--accent),0 0 24px rgba(74,158,255,.3);opacity:1}}
 
     .branch-card{max-width:240px}
     .branch-l .branch-card{text-align:right}
@@ -126,6 +126,7 @@
     .flow-item p{font-size:.92rem;color:var(--dim);line-height:1.6}
     .flow-arrow{flex-shrink:0;width:40px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.2rem;opacity:.6}
     .flow-arrow svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5}
+    .flow-arrow-down{display:none}
 
     /* ── WHY NOW - VISUAL ── */
     .why-visual{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
@@ -177,22 +178,23 @@
     .market-desc{font-size:.95rem;color:var(--dim);line-height:1.5}
     /* Concentric circles */
     .tam-circles{display:flex;align-items:center;justify-content:center;padding:2rem}
-    .tam-svg{width:300px;height:300px}
-    .tam-svg circle{fill:none;stroke-width:1}
-    .tam-svg .c-tam{stroke:var(--accent);opacity:.2;r:140}
-    .tam-svg .c-sam{stroke:var(--accent);opacity:.4;r:95}
-    .tam-svg .c-som{stroke:var(--accent);fill:rgba(26,61,122,.15);r:45}
+    .tam-svg{width:420px;height:420px}
+    .tam-svg circle{fill:none;stroke-width:1.5}
+    .tam-svg .c-tam{stroke:var(--w);opacity:.15;r:190}
+    .tam-svg .c-sam{stroke:var(--w);opacity:.35;r:130}
+    .tam-svg .c-som{stroke:#ffd700;fill:rgba(255,215,0,.12);r:60}
     .tam-svg text{font-family:'Inter',sans-serif;fill:var(--w);font-weight:700}
-    .tam-svg .t-big{font-size:14px}
-    .tam-svg .t-sm{font-size:9px;fill:var(--dim);font-weight:400}
-    .tam-svg .t-label{font-family:'JetBrains Mono',monospace;font-size:8px;fill:var(--dim);letter-spacing:2px}
+    .tam-svg .t-big{font-size:16px}
+    .tam-svg .t-sm{font-size:10px;fill:var(--muted);font-weight:400}
+    .tam-svg .t-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--muted);letter-spacing:2px}
 
     /* ── MODEL ── */
     .model-stats{display:flex;gap:4rem;margin-top:2rem;padding:2rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-    .model-stat-val{font-size:2.6rem;font-weight:900;letter-spacing:-.03em;color:var(--accent)}
+    .model-stat-val{font-size:2.6rem;font-weight:900;letter-spacing:-.03em;color:var(--w)}
     .model-stat-desc{font-size:.92rem;color:var(--dim);margin-top:.2rem}
-    .price-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:3rem;border:1px solid var(--rule)}
-    .price-col{padding:1.4rem;border-right:1px solid var(--rule)}
+    .price-carousel{position:relative;margin-top:3rem;overflow:hidden}
+    .price-grid{display:flex;gap:0;transition:transform .4s cubic-bezier(.16,1,.3,1);border:1px solid var(--rule)}
+    .price-col{min-width:25%;padding:1.4rem;border-right:1px solid var(--rule);flex-shrink:0}
     .price-col:last-child{border-right:none}
     .price-col-head{font-size:.95rem;font-weight:700;padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid var(--rule)}
     .price-col-head .pop{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.2rem}
@@ -200,10 +202,15 @@
     .price-per{font-size:.78rem;color:var(--dim);margin-bottom:.8rem}
     .price-feat{font-size:.85rem;color:var(--dim);padding:.15rem 0;line-height:1.6}
     .price-col.active{background:#060606}
+    .carousel-dots{display:none;justify-content:center;gap:.5rem;margin-top:1rem}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--rule);border:none;cursor:pointer;padding:0;transition:background .3s}
+    .carousel-dot.active{background:var(--accent)}
 
     /* ── PROJECTIONS ── */
-    .proj-row{display:flex;align-items:baseline;gap:1.5rem;margin-top:2.5rem;flex-wrap:wrap;justify-content:center;text-align:center}
-    .proj-val{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-.04em;color:var(--accent)}
+    .proj-top{display:flex;align-items:baseline;gap:1.5rem;margin-top:2.5rem;justify-content:center;text-align:center}
+    .proj-bottom{display:flex;justify-content:center;text-align:center;margin-top:2rem}
+    .proj-val{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-.04em;color:var(--w)}
+    .proj-val-big{font-size:clamp(3rem,7vw,5rem);font-weight:900;letter-spacing:-.04em;color:var(--w)}
     .proj-x{font-size:1.4rem;color:#222;font-weight:300}
     .proj-desc{font-size:.92rem;color:var(--dim);margin-top:.2rem}
     .proj-note{text-align:center;margin-top:2rem;font-size:.9rem;color:var(--dim);max-width:530px;margin-left:auto;margin-right:auto;line-height:1.7;padding-top:1.5rem;border-top:1px solid var(--rule)}
@@ -281,17 +288,20 @@
       .problem-col{border-right:none;padding:1.5rem 0;border-bottom:1px solid var(--rule)}
       .problem-col:last-child{border-bottom:none}
       .problem-col:first-child{padding-left:0}
-      .flow-row{flex-direction:column}
-      .flow-item{text-align:left;padding:1.2rem 0;border:none;border-bottom:1px solid var(--rule)}
-      .flow-item:last-child{border-bottom:none}
-      .flow-arrow{transform:rotate(90deg);width:auto;height:30px}
-      .flow-arrow svg{width:20px;height:20px}
+      .flow-row{flex-direction:column;gap:0}
+      .flow-item{text-align:center;padding:2rem 1.5rem;border:1px solid var(--rule);border-bottom:none}
+      .flow-item:last-child{border-bottom:1px solid var(--rule)}
+      .flow-arrow{display:none}
+      .flow-arrow-down{display:flex;justify-content:center;padding:.8rem 0}
+      .flow-arrow-down svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5;opacity:.6}
       .why-visual,.whyus-visual,.market-visual{grid-template-columns:1fr}
       .bar-chart,.loop-wrap,.tam-circles{order:-1}
       .market-numbers{order:1}
       .market-item{border-bottom:1px solid var(--rule)}
       .market-item:last-child{border-bottom:none}
-      .price-grid{grid-template-columns:1fr 1fr}
+      .price-grid{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;border:none;gap:.8rem;padding-bottom:.5rem}
+      .price-col{min-width:80%;scroll-snap-align:center;border:1px solid var(--rule);border-radius:0}
+      .carousel-dots{display:flex}
       .model-stats{flex-wrap:wrap;gap:2rem}
       .team-grid{grid-template-columns:1fr}
       .team-member{border-right:none!important}
@@ -301,15 +311,16 @@
       .tl-when{position:relative;left:auto;top:auto;width:auto;text-align:left;margin-bottom:.3rem}
       .tl-line{left:22px}
       .tl-dot{left:-20px}
-      .proj-row{flex-direction:column;gap:.8rem}
-      .proj-x{transform:rotate(90deg)}
+      .proj-top{flex-wrap:wrap;gap:1rem}
+      .proj-x{font-size:1rem}
       .comp-tbl{font-size:.85rem}
       .comp-tbl th,.comp-tbl td{padding:.7rem .6rem}
       .loop-svg{width:220px;height:220px}
-      .tam-svg{width:260px;height:260px}
+      .tam-svg{width:340px;height:340px}
     }
     @media(max-width:500px){
-      .price-grid,.adv-row{grid-template-columns:1fr}
+      .price-col{min-width:85%}
+      .adv-row{grid-template-columns:1fr}
       .model-stats{flex-direction:column;gap:2rem}
       .hero-name{font-size:clamp(2.5rem,14vw,4rem)}
       .problem-statement{font-size:clamp(1.5rem,6vw,2rem)}
@@ -448,12 +459,16 @@
     <div class="flow-row">
       <div class="flow-item rv rv-d1"><div class="flow-num">01</div><h4>Onboard</h4><p>AI extracts skills from chat</p></div>
       <div class="flow-arrow rv rv-d1"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-arrow-down rv rv-d1"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-item rv rv-d2"><div class="flow-num">02</div><h4>Post Gig</h4><p>Listers post via chat</p></div>
       <div class="flow-arrow rv rv-d2"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-arrow-down rv rv-d2"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-item rv rv-d3"><div class="flow-num">03</div><h4>ML Match</h4><p>Best-fit in 5 minutes</p></div>
       <div class="flow-arrow rv rv-d3"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-arrow-down rv rv-d3"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-item rv rv-d4"><div class="flow-num">04</div><h4>Confirm</h4><p>Dual confirmation</p></div>
       <div class="flow-arrow rv rv-d4"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-arrow-down rv rv-d4"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-item rv rv-d5"><div class="flow-num">05</div><h4>Get Paid</h4><p>Payment via LythePay</p></div>
     </div>
   </div>
@@ -561,21 +576,21 @@
         <div class="market-item rv rv-d3"><div class="market-label">SOM &middot; Singapore</div><div class="market-num">$0.31M</div><p class="market-desc">10% adoption rate, conservative estimate</p></div>
       </div>
       <div class="tam-circles rv rv-d2">
-        <svg class="tam-svg" viewBox="0 0 300 300">
+        <svg class="tam-svg" viewBox="0 0 420 420">
           <!-- TAM outer -->
-          <circle class="c-tam" cx="150" cy="150"/>
-          <text x="150" y="32" text-anchor="middle" class="t-label">TAM</text>
-          <text x="150" y="46" text-anchor="middle" class="t-big">$2.64B</text>
-          <text x="150" y="60" text-anchor="middle" class="t-sm">264M students globally</text>
+          <circle class="c-tam" cx="210" cy="210"/>
+          <text x="210" y="38" text-anchor="middle" class="t-label">TAM</text>
+          <text x="210" y="56" text-anchor="middle" class="t-big">$2.64B</text>
+          <text x="210" y="72" text-anchor="middle" class="t-sm">264M students globally</text>
           <!-- SAM middle -->
-          <circle class="c-sam" cx="150" cy="150"/>
-          <text x="150" y="80" text-anchor="middle" class="t-label">SAM</text>
-          <text x="150" y="95" text-anchor="middle" class="t-big">$224M</text>
+          <circle class="c-sam" cx="210" cy="210"/>
+          <text x="210" y="100" text-anchor="middle" class="t-label">SAM</text>
+          <text x="210" y="118" text-anchor="middle" class="t-big">$224M</text>
           <!-- SOM inner -->
-          <circle class="c-som" cx="150" cy="150"/>
-          <text x="150" y="142" text-anchor="middle" class="t-label">SOM</text>
-          <text x="150" y="158" text-anchor="middle" class="t-big" style="font-size:16px">$0.31M</text>
-          <text x="150" y="172" text-anchor="middle" class="t-sm">Singapore</text>
+          <circle class="c-som" cx="210" cy="210"/>
+          <text x="210" y="200" text-anchor="middle" class="t-label">SOM</text>
+          <text x="210" y="220" text-anchor="middle" class="t-big" style="font-size:18px">$0.31M</text>
+          <text x="210" y="238" text-anchor="middle" class="t-sm">Singapore</text>
         </svg>
       </div>
     </div>
@@ -594,11 +609,19 @@
       <div><div class="model-stat-val">$29.99</div><div class="model-stat-desc">Pro subscription / month</div></div>
       <div><div class="model-stat-val">$15</div><div class="model-stat-desc">Pay-per-hire tier</div></div>
     </div>
-    <div class="price-grid">
-      <div class="price-col"><div class="price-col-head">Free</div><div class="price-val">$0</div><div class="price-per">/month</div><div class="price-feat">Standard matching</div><div class="price-feat">Max 2 workers</div><div class="price-feat">Unlimited posts</div><div class="price-feat">Basic support</div></div>
-      <div class="price-col active"><div class="price-col-head"><span class="pop">Popular</span>Pro</div><div class="price-val accent">$29.99</div><div class="price-per">/month</div><div class="price-feat">Priority matching</div><div class="price-feat">Max 5 workers</div><div class="price-feat">Unlimited posts</div><div class="price-feat">Direct support</div><div class="price-feat">Scheduling + alerts</div></div>
-      <div class="price-col"><div class="price-col-head">Custom</div><div class="price-val">Custom</div><div class="price-per">/month</div><div class="price-feat">Unlimited matching</div><div class="price-feat">Unlimited workers</div><div class="price-feat">Slack support</div><div class="price-feat">Invoicing + billing</div><div class="price-feat">Replacement SLA</div></div>
-      <div class="price-col"><div class="price-col-head">Usage</div><div class="price-val accent">$15</div><div class="price-per">/hire</div><div class="price-feat">Priority matching</div><div class="price-feat">Guaranteed hire</div><div class="price-feat">One-time hire</div></div>
+    <div class="price-carousel">
+      <div class="price-grid" id="priceGrid">
+        <div class="price-col"><div class="price-col-head">Free</div><div class="price-val">$0</div><div class="price-per">/month</div><div class="price-feat">Standard matching</div><div class="price-feat">Max 2 workers</div><div class="price-feat">Unlimited posts</div><div class="price-feat">Basic support</div></div>
+        <div class="price-col active"><div class="price-col-head"><span class="pop">Popular</span>Pro</div><div class="price-val accent">$29.99</div><div class="price-per">/month</div><div class="price-feat">Priority matching</div><div class="price-feat">Max 5 workers</div><div class="price-feat">Unlimited posts</div><div class="price-feat">Direct support</div><div class="price-feat">Scheduling + alerts</div></div>
+        <div class="price-col"><div class="price-col-head">Custom</div><div class="price-val">Custom</div><div class="price-per">/month</div><div class="price-feat">Unlimited matching</div><div class="price-feat">Unlimited workers</div><div class="price-feat">Slack support</div><div class="price-feat">Invoicing + billing</div><div class="price-feat">Replacement SLA</div></div>
+        <div class="price-col"><div class="price-col-head">Usage</div><div class="price-val accent">$15</div><div class="price-per">/hire</div><div class="price-feat">Priority matching</div><div class="price-feat">Guaranteed hire</div><div class="price-feat">One-time hire</div></div>
+      </div>
+      <div class="carousel-dots" id="priceDots">
+        <button class="carousel-dot active" data-i="0"></button>
+        <button class="carousel-dot" data-i="1"></button>
+        <button class="carousel-dot" data-i="2"></button>
+        <button class="carousel-dot" data-i="3"></button>
+      </div>
     </div>
   </div>
 </section>
@@ -610,12 +633,13 @@
   <div class="wrap">
     <div class="label" style="justify-content:center">09 &mdash; Financial Projections</div>
     <h2 class="h" style="text-align:center;margin:0 auto">$93k in projected MRR at <span class="accent">&lt;1% adoption.</span></h2>
-    <div class="proj-row">
+    <div class="proj-top">
       <div><div class="proj-val">~3.1k</div><div class="proj-desc">Pro-paying teams</div></div>
       <div class="proj-x">&times;</div>
       <div><div class="proj-val">$29.99</div><div class="proj-desc">per team / month</div></div>
-      <div class="proj-x">=</div>
-      <div><div class="proj-val">~$93k</div><div class="proj-desc">MRR (projected)</div></div>
+    </div>
+    <div class="proj-bottom">
+      <div><div class="proj-val-big">~$93k</div><div class="proj-desc">MRR (projected)</div></div>
     </div>
     <div class="proj-note">Assuming ~3.1k repeat hiring teams (events, vendors, agencies) in Singapore adopt Pro (&lt;1% of SG enterprises), with only 1 month of subscription per team.</div>
   </div>
@@ -754,7 +778,26 @@ const ch=document.getElementById('chat');if(ch)cio.observe(ch);
 
 // Count up numbers
 const countIO=new IntersectionObserver(e=>{e.forEach(el=>{if(!el.isIntersecting)return;const t=el.target;if(t.dataset.c)return;t.dataset.c='1';const txt=t.textContent;const m=txt.match(/^([~$]*)(\d[\d,.]*)(.*)/);if(!m)return;const pre=m[1],target=parseFloat(m[2].replace(/,/g,'')),suf=m[3],dec=m[2].includes('.');let s=performance.now();function tick(now){const p=Math.min((now-s)/1200,1);const ease=1-Math.pow(1-p,3);const v=target*ease;t.textContent=pre+(dec?v.toFixed(2):Math.round(v).toLocaleString())+suf;if(p<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)})},{threshold:.5});
-document.querySelectorAll('.about-stat-val,.problem-pct,.market-num,.model-stat-val,.proj-val,.price-val').forEach(el=>{if(/\d/.test(el.textContent))countIO.observe(el)});
+document.querySelectorAll('.about-stat-val,.problem-pct,.market-num,.model-stat-val,.proj-val,.proj-val-big,.price-val').forEach(el=>{if(/\d/.test(el.textContent))countIO.observe(el)});
+
+// Carousel dots for price grid
+const pg=document.getElementById('priceGrid');
+const dots=document.querySelectorAll('#priceDots .carousel-dot');
+if(pg&&dots.length){
+  pg.addEventListener('scroll',()=>{
+    const cols=pg.querySelectorAll('.price-col');
+    const scrollLeft=pg.scrollLeft;
+    const colW=cols[0].offsetWidth+parseFloat(getComputedStyle(pg).gap||0);
+    let idx=Math.round(scrollLeft/colW);
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  });
+  dots.forEach(d=>d.addEventListener('click',()=>{
+    const i=parseInt(d.dataset.i);
+    const cols=pg.querySelectorAll('.price-col');
+    const gap=parseFloat(getComputedStyle(pg).gap||0);
+    pg.scrollTo({left:i*(cols[0].offsetWidth+gap),behavior:'smooth'});
+  }));
+}
 </script>
 </body>
 </html>
